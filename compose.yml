@@ -1,8 +1,35 @@
 services:
+  postgres:
+    image: postgres:17.2-alpine3.21
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "postgres", "-U", "postgres"]
+      start_period: 3s
+      interval: 5s
+      timeout: 3s
+      retries: 3
   backend:
-    build: ./backend
+    build: ./ParaCAD-backend
     ports:
       - "8081:8081"
     environment:
       - PORT=8081
       - JWT_SECRET=not_a_real_secret_lol
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+  frontend:
+    build: ./ParaCAD-frontend
+    ports:
+      - "8080:8080"
+    # depends_on:
+    #   - backend TODO
