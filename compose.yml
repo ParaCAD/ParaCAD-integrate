@@ -9,7 +9,7 @@ services:
       - POSTGRES_DB=postgres
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "postgres", "-U", "postgres"]
-      start_period: 3s
+      start_period: 2s
       interval: 5s
       timeout: 3s
       retries: 3
@@ -24,12 +24,13 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=postgres
+      - IMAGE_STORAGE_DIR=/app/images
     depends_on:
       postgres:
         condition: service_healthy
-  frontend:
-    build: ./ParaCAD-frontend
-    ports:
-      - "8080:8080"
+#  frontend:
+#    build: ./ParaCAD-frontend
+#    ports:
+#      - "8080:8080"
     # depends_on:
     #   - backend TODO
