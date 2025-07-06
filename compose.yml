@@ -28,9 +28,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-#  frontend:
-#    build: ./ParaCAD-frontend
-#    ports:
-#      - "8080:8080"
-    # depends_on:
-    #   - backend TODO
+  frontend:
+    build: ./ParaCAD-frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
